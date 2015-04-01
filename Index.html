@@ -12,26 +12,38 @@
     
     <style>
         table, th, td {
-            border: 1px solid black;
+            border: 2px solid #E6E6E6;
+        }
+        td {
+            background:white;
+            -o-transition:background 1s ease-in;
+            -ms-transition:background 1s ease-in;
+            -moz-transition:background 1s ease-in;
+            -webkit-transition:background 1s ease-in;
+            transition:background 1s ease-in;
+        }
+        td:hover {background:#7094FF;}
+        h5 {
+            text-align: center;
         }
     </style>
 </head>
     <body>
         <form>
-            <input type="text" size="30" placeholder="add new channel here">
-            <input class="btn-primary" type="submit" value="add">
+            <input type="text" size="30" placeholder="add new channel here" class='form-control' style="width:15%; display: inline-block;">
+            <input class="btn btn-success" type="submit" value="add">
         </form>
             <table style="width:100%">
                 <tr>
-                    <td>channelId </td>
-                    <td>channelTitle </td>
-                    <td>videoId </td>
-                    <td>videoTitle </td>
-                    <td>publishedAt </td>
-                    <td>viewCount </td>
-                    <td>likeCount </td>
-                    <td>dislikeCount </td>
-                    <td>commentCount </td>
+                    <td><h5>channelId </h5></td>
+                    <td><h5>channelTitle </h5></td>
+                    <td><h5>videoId </h5></td>
+                    <td><h5>videoTitle </h5></td>
+                    <td><h5>publishedAt </h5></td>
+                    <td><h5>viewCount </h5></td>
+                    <td><h5>likeCount </h5></td>
+                    <td><h5>dislikeCount </h5></td>
+                    <td><h5>commentCount </h5></td>
                 </tr>
             </table>
         </form>

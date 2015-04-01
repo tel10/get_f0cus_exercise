@@ -30,8 +30,8 @@
 </head>
     <body>
         <form>
-            <input type="text" size="30" placeholder="add new channel here" class='form-control' style="width:15%; display: inline-block;">
-            <input class="btn btn-success" type="submit" value="add">
+            <input type="text" size="30" placeholder="add new channel here" class='form-control' style="width:15%; display: inline-block;" id="YT_id">
+            <input class="btn btn-success" type="submit" value="add" id="Submmiter">
         </form>
             <table style="width:100%">
                 <tr>
@@ -46,6 +46,42 @@
                     <td><h5>commentCount </h5></td>
                 </tr>
             </table>
-        </form>
+    <script>
+$('#Submmiter').click(function (event){
+    event.preventDefault();
+    var name = $('#YT_id').val();
+    getrequest(name);
+});          
+    
+function getrequest(arg){
+       $.ajax({
+                type: "GET",
+                url: "https://demo.getfokus.com:3000/Service/Console/YoutubeChannelStats",
+                data:  {
+                        authKey: 91162629,
+                        channelId: arg
+                    },
+                dataType: 'json',
+                success: function(data, textStatus, xhr) {      //tutaj zwracane są kody HTML, w przypadku pustego inputa zwraca poprawną
+                    console.log("status code:",xhr.status);     //wartość. Tak samo w przypadku niepoprawnego authKeya
+                                },
+                complete: function(xhr, textStatus) {
+                    console.log(xhr.status);
+                } 
+              }).done(function(resp) {
+                    console.log("step I");
+                    if(resp){
+                        for(var i = 0; i < resp.length; i++){   //Tutaj możesz sprawdzić działanie requestowania całości
+                            console.log(resp[i]);               //Przy odpowiednim idkanału na YT printuje Ci w konsoli cały obiekt.
+                        }
+                    }
+                    else {
+                        alert('No result.');
+                    }
+	           });
+    }
+        
+
+    </script>
     </body>
 </html>

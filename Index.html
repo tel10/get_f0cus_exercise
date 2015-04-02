@@ -62,14 +62,24 @@ function getrequest(arg){
                         channelId: arg
                     },
                 dataType: 'json',
-                success: function(data, textStatus, xhr) {      //tutaj zwracane są kody HTML, w przypadku pustego inputa zwraca poprawną
-                    console.log("status code:",xhr.status);     //wartość. Tak samo w przypadku niepoprawnego authKeya
+                success: function(data, textStatus, xhr) { 
+                        console.log("status code:",xhr.status);
                                 },
-                complete: function(xhr, textStatus) {
-                    console.log(xhr.status);
+                complete: function(xhr, textStatus) { 
+                    if (xhr.status === 400)
+                    {
+                        alert("Empty channel id, please enter valid Id");
+                    }
+                    else if(xhr.status === 401)
+                    {
+                        alert("Unauthorized User - Please use valid Authentication Key")
+                    }
+                    else
+                    {
+                        console.log("status code:",xhr.status);
+                    }
                 } 
               }).done(function(resp) {
-                    console.log("step I");
                     if(resp){
                         for(var i = 0; i < resp.length; i++){   //Tutaj możesz sprawdzić działanie requestowania całości
                             console.log(resp[i]);               //Przy odpowiednim idkanału na YT printuje Ci w konsoli cały obiekt.

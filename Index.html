@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="example_app">
 <head lang="en">
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
@@ -28,9 +28,9 @@
         }
     </style>
 </head>
-    <body>
-        <form>
-            <input type="text" size="30" placeholder="add new channel here" class='form-control' style="width:15%; display: inline-block;" id="YT_id">
+    <body ng-controller="RespCtrl">
+        <form ng-submit="addChannel()">
+            <input type="text" size="30" placeholder="add new channel here" class='form-control' style="width:15%; display: inline-block;" id="YT_id" ng-model="givenChannelId">
             <input class="btn btn-success" type="submit" value="add" id="Submmiter">
         </form>
             <table style="width:100%">
@@ -45,15 +45,59 @@
                     <td><h5>dislikeCount </h5></td>
                     <td><h5>commentCount </h5></td>
                 </tr>
+                <tr ng-repeat='response in responses'>
+                    <td>{{response.channelId}}</td>
+                    <td>{{response.channelTitle}}</td>
+                    <td>{{response.videoId}}</td>
+                    <td>{{response.videoTitle}}</td>
+                    <td>{{response.publishedAt}}</td>
+                    <td>{{response.viewCount}}</td>
+                    <td>{{response.likeCount}}</td>
+                    <td>{{response.dislikeCount}}</td>
+                    <td>{{response.commentCount}}</td>
+                </tr>
             </table>
     <script>
-$('#Submmiter').click(function (event){
-    event.preventDefault();
-    var name = $('#YT_id').val();
-    if( validateInput(name) )
-    {
-        getrequest(name);
-    }
+var ex_app = angular.module("example_app",[]);
+ex_app.controller('RespCtrl',function($scope) {
+//    var YT_id = $scope.givenChannelId;
+//    console.log(YT_id)z
+//    if( validateInput($scope.givenChannelId) ){
+        $scope.addChannel = function () {
+            $.ajax({
+                type: "GET",
+                url: "https://demo.getfokus.com:3000/Service/Console/YoutubeChannelStats",
+                data: {
+                    authKey: 91162629,
+                    channelId: $scope.givenChannelId
+                },
+                dataType: 'json',
+                success: function(data, textStatus, xhr) { 
+                    console.log("status code:",xhr.status);
+                },
+                complete: function(xhr, textStatus) { 
+                    if (xhr.status === 400)
+                    {
+                        alert("Empty channel id, please enter valid Id");
+                    }
+                    else if(xhr.status === 401)
+                    {
+                        alert("Unauthorized User - Please use valid Authentication Key")
+                    }
+                    else
+                    {
+                        console.log("status code:",xhr.status);
+                    }
+                }
+            }).done(function (resp) {
+                if (resp) {
+                    $scope.responses = resp;
+                } else {
+                    alert('No result.');
+                }
+            });
+        };
+//    }
 });
 
 function validateInput(arg){
@@ -77,46 +121,6 @@ function validateInput(arg){
         return false;
     }
 }
-    
-function getrequest(arg){
-       $.ajax({
-                type: "GET",
-                url: "https://demo.getfokus.com:3000/Service/Console/YoutubeChannelStats",
-                data:  {
-                        authKey: 91162629,
-                        channelId: arg
-                    },
-                dataType: 'json',
-                success: function(data, textStatus, xhr) { 
-                        console.log("status code:",xhr.status);
-                                },
-                complete: function(xhr, textStatus) { 
-                    if (xhr.status === 400)
-                    {
-                        alert("Empty channel id, please enter valid Id");
-                    }
-                    else if(xhr.status === 401)
-                    {
-                        alert("Unauthorized User - Please use valid Authentication Key")
-                    }
-                    else
-                    {
-                        console.log("status code:",xhr.status);
-                    }
-                } 
-              }).done(function(resp) {
-                    if(resp){
-                        for(var i = 0; i < resp.length; i++){   //Tutaj możesz sprawdzić działanie requestowania całości
-                            console.log(resp[i]);               //Przy odpowiednim idkanału na YT printuje Ci w konsoli cały obiekt.
-                        }
-                    }
-                    else {
-                        alert('No result.');
-                    }
-	           });
-    }
-        
-
     </script>
     </body>
 </html>

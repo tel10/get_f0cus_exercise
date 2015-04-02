@@ -60,10 +60,8 @@
     <script>
 var ex_app = angular.module("example_app",[]);
 ex_app.controller('RespCtrl',function($scope) {
-//    var YT_id = $scope.givenChannelId;
-//    console.log(YT_id)z
-//    if( validateInput($scope.givenChannelId) ){
         $scope.addChannel = function () {
+            if( validateInput($scope.givenChannelId)){
             $.ajax({
                 type: "GET",
                 url: "https://demo.getfokus.com:3000/Service/Console/YoutubeChannelStats",
@@ -96,6 +94,7 @@ ex_app.controller('RespCtrl',function($scope) {
                     alert('No result.');
                 }
             });
+        }
         };
 //    }
 });

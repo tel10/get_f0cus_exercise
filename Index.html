@@ -50,8 +50,33 @@
 $('#Submmiter').click(function (event){
     event.preventDefault();
     var name = $('#YT_id').val();
-    getrequest(name);
-});          
+    if( validateInput(name) )
+    {
+        getrequest(name);
+    }
+});
+
+function validateInput(arg){
+    if( arg.length >= 10 && arg.length <= 30)
+    {   
+        var checker = !(/[\\/&.,!@#%^*'":?><$;]/.test(arg));
+        console.log(checker);
+        if(checker === false)
+        {
+            alert("inappropriate signs channel ID");
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    else
+    {
+        alert("Too short or too long channel ID");
+        return false;
+    }
+}
     
 function getrequest(arg){
        $.ajax({
